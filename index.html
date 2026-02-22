@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Lorem Ipsum Generator</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f13;--surface:#1a1a24;--surface2:#24243a;--border:#2e2e4a;--text:#e4e4f0;--text2:#9999b3;--accent:#7c5cfc;--accent2:#a78bfa;--accent-glow:rgba(124,92,252,.15);--success:#34d399;--radius:12px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--accent2);text-decoration:none}
+.container{max-width:960px;margin:0 auto;padding:0 20px;width:100%}
+header{padding:32px 0 24px;text-align:center}
+header h1{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+header p{color:var(--text2);font-size:.95rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:1.05rem;font-weight:600;margin-bottom:16px;color:var(--accent2)}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.col{flex:1;min-width:200px}
+label{display:block;font-size:.85rem;color:var(--text2);margin-bottom:6px;font-weight:500}
+select,input[type=number]{width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.9rem;outline:none;transition:border .2s}
+select:focus,input[type=number]:focus{border-color:var(--accent)}
+select option{background:var(--surface2);color:var(--text)}
+.style-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:0}
+.style-btn{padding:12px 16px;background:var(--surface2);border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .2s;text-align:center;font-weight:500}
+.style-btn:hover{border-color:var(--accent);background:var(--accent-glow)}
+.style-btn.active{border-color:var(--accent);background:var(--accent-glow);color:var(--accent2)}
+.style-btn .icon{font-size:1.3rem;display:block;margin-bottom:4px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.btn{padding:12px 28px;border:none;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#6344e0);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,92,252,.4)}
+.btn-copy{background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+.btn-copy:hover{border-color:var(--accent);background:var(--accent-glow)}
+.btn-copy.copied{background:rgba(52,211,153,.15);border-color:var(--success);color:var(--success)}
+.preview-area{position:relative}
+.preview-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.preview-tabs{display:flex;gap:4px}
+.preview-tab{padding:6px 16px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s}
+.preview-tab.active{background:var(--accent-glow);border-color:var(--accent);color:var(--accent2)}
+.output{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:20px;min-height:200px;max-height:500px;overflow-y:auto;font-size:.9rem;line-height:1.8;white-space:pre-wrap;word-break:break-word}
+.output::-webkit-scrollbar{width:6px}
+.output::-webkit-scrollbar-track{background:transparent}
+.output::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.output p,.output div,.output li{margin-bottom:8px}
+.output.html-view code{color:var(--accent2)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--success);color:#000;padding:12px 24px;border-radius:8px;font-weight:600;font-size:.9rem;transition:transform .3s ease;z-index:999;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.stats{display:flex;gap:20px;margin-top:12px;flex-wrap:wrap}
+.stat{font-size:.8rem;color:var(--text2)}
+.stat span{color:var(--accent2);font-weight:600}
+footer{margin-top:auto;padding:24px 0;text-align:center;color:var(--text2);font-size:.8rem;border-top:1px solid var(--border)}
+@media(max-width:600px){
+header h1{font-size:1.5rem}
+.card{padding:16px}
+.row{flex-direction:column;gap:12px}
+.col{min-width:100%}
+.style-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+.actions{flex-direction:column}
+.btn{width:100%;justify-content:center}
+.stats{flex-direction:column;gap:6px}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>✦ AI Lorem Ipsum</h1>
+<p>Generate placeholder text in multiple styles — fast, flexible, and beautiful.</p>
+</div>
+</header>
+<main class="container">
+<div class="card">
+<div class="card-title">Text Style</div>
+<div class="style-grid" id="styleGrid">
+<button class="style-btn active" data-style="classic"><span class="icon">📜</span>Classic Latin</button>
+<button class="style-btn" data-style="business"><span class="icon">💼</span>Business</button>
+<button class="style-btn" data-style="tech"><span class="icon">🚀</span>Tech</button>
+<button class="style-btn" data-style="humor"><span class="icon">😂</span>Humor</button>
+<button class="style-btn" data-style="chinese"><span class="icon">🀄</span>中文</button>
+</div>
+</div>
+<div class="card">
+<div class="card-title">Generation Options</div>
+<div class="row">
+<div class="col">
+<label for="genType">Generate By</label>
+<select id="genType">
+<option value="paragraphs">Paragraphs</option>
+<option value="sentences">Sentences</option>
+<option value="words">Words</option>
+</select>
+</div>
+<div class="col">
+<label for="genCount">Count</label>
+<input type="number" id="genCount" value="3" min="1" max="999">
+</div>
+<div class="col">
+<label for="wrapTag">HTML Wrap</label>
+<select id="wrapTag">
+<option value="none">Plain Text</option>
+<option value="p">&lt;p&gt; tags</option>
+<option value="div">&lt;div&gt; tags</option>
+<option value="li">&lt;li&gt; tags</option>
+</select>
+</div>
+</div>
+<div class="actions">
+<button class="btn btn-primary" id="generateBtn">⚡ Generate</button>
+<button class="btn btn-copy" id="copyBtn">📋 Copy to Clipboard</button>
+</div>
+</div>
+<div class="card preview-area">
+<div class="preview-header">
+<div class="card-title" style="margin-bottom:0">Preview</div>
+<div class="preview-tabs">
+<button class="preview-tab active" data-view="rendered">Rendered</button>
+<button class="preview-tab" data-view="source">Source</button>
+</div>
+</div>
+<div class="output" id="output">Click <strong>Generate</strong> to create placeholder text...</div>
+<div class="stats" id="stats"></div>
+</div>
+</main>
+<footer>
+<div class="container">AI Lorem Ipsum Generator &copy; 2025 &mdash; Generate beautiful placeholder text instantly.</div>
+</footer>
+<div class="toast" id="toast">✓ Copied to clipboard!</div>
+
+<script>
+const DATA={
+classic:[
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+"Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.",
+"Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
+"Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam porta sem malesuada magna mollis euismod.",
+"Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Sed posuere consectetur est at lobortis.",
+"Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
+"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.",
+"Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis.",
+"Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a mi.",
+"Aliquam erat volutpat. Nunc eleifend leo vitae magna. In id erat non orci commodo lobortis. Proin neque massa, cursus ut, gravida ut, lobortis eget, lacus. Sed diam. Praesent fermentum tempor tellus. Nullam tempus. Mauris ac felis vel velit tristique imperdiet."
+],
+business:[
+"In today's rapidly evolving marketplace, organizations must embrace digital transformation to maintain competitive advantage. Strategic alignment between technology investments and business objectives remains paramount for sustainable growth. Companies that leverage data-driven decision making consistently outperform their peers across key performance indicators.",
+"Effective stakeholder engagement requires a comprehensive communication strategy that addresses the needs of diverse audiences. By fostering transparent dialogue and building trust-based relationships, organizations can navigate complex challenges while maintaining alignment with their core mission and values.",
+"The quarterly financial review indicates strong performance across all business units, with revenue growth exceeding projections by twelve percent. Operating margins have improved through strategic cost optimization initiatives, while customer acquisition costs continue to decline as brand awareness strengthens in key markets.",
+"Supply chain resilience has become a critical differentiator in the post-pandemic business landscape. Organizations investing in diversified sourcing strategies, predictive analytics, and agile logistics frameworks are better positioned to mitigate disruption risks and capitalize on emerging market opportunities.",
+"Our go-to-market strategy leverages a multi-channel approach to maximize customer reach and engagement. By integrating digital marketing campaigns with traditional sales methodologies, we create synergistic touchpoints that guide prospects through the conversion funnel with measurable efficiency.",
+"Corporate governance frameworks must evolve to address emerging risks in cybersecurity, environmental sustainability, and workforce transformation. Board-level oversight of these strategic priorities ensures organizational resilience while maintaining fiduciary responsibility to shareholders and stakeholders alike.",
+"The merger and acquisition pipeline reflects our commitment to strategic growth through complementary capability building. Due diligence processes have been enhanced with AI-powered analytics, enabling faster evaluation cycles and more accurate valuation models for potential targets.",
+"Employee engagement surveys reveal a strong correlation between professional development opportunities and retention rates. Organizations that invest in continuous learning programs, mentorship initiatives, and career pathway frameworks demonstrate measurably higher workforce satisfaction and productivity metrics.",
+"Market segmentation analysis has identified three high-growth verticals with significant untapped potential. Our product roadmap aligns with these opportunities through targeted feature development, strategic partnerships, and localized go-to-market campaigns designed to accelerate market penetration.",
+"Risk management protocols have been updated to incorporate scenario planning for geopolitical uncertainty, regulatory changes, and technological disruption. Cross-functional risk committees now convene monthly to assess emerging threats and develop proactive mitigation strategies."
+],
+tech:[
+"The microservices architecture enables horizontal scaling through containerized deployments orchestrated by Kubernetes clusters. Each service communicates via gRPC protocols with circuit breaker patterns ensuring fault tolerance. The event-driven pipeline processes over ten million messages per second with sub-millisecond latency.",
+"Our machine learning pipeline leverages transformer-based models fine-tuned on domain-specific datasets. The training infrastructure utilizes distributed GPU clusters with mixed-precision computation, achieving state-of-the-art performance on benchmark evaluations while reducing inference costs by forty percent.",
+"The CI/CD pipeline automates the entire software delivery lifecycle from code commit to production deployment. Infrastructure as code templates provision ephemeral environments for integration testing, while canary deployments minimize risk through gradual traffic shifting and automated rollback triggers.",
+"Zero-trust security architecture implements identity-based access controls at every network boundary. Mutual TLS encryption secures service-to-service communication, while behavioral analytics engines detect anomalous patterns in real-time, triggering automated incident response workflows.",
+"The distributed database cluster employs a consensus protocol for strong consistency guarantees across geographically dispersed nodes. Write-ahead logging ensures durability, while read replicas with tunable consistency levels optimize query performance for latency-sensitive applications.",
+"Edge computing nodes process sensor data locally using lightweight inference models, reducing bandwidth consumption by seventy percent. The federated learning framework aggregates model updates from distributed edge devices without centralizing raw data, preserving privacy while improving global model accuracy.",
+"WebAssembly modules compiled from Rust source code execute at near-native speed within the browser sandbox. The virtual DOM diffing algorithm minimizes re-renders, while service workers enable offline-first functionality with background sync capabilities for seamless user experiences.",
+"The observability stack integrates distributed tracing, structured logging, and custom metrics collection into a unified dashboard. Automated alerting rules based on service level objectives trigger on-call notifications through PagerDuty integration, with runbooks linked directly to each alert type.",
+"GraphQL federation enables a unified API gateway that composes schemas from multiple backend services. Persisted queries reduce parsing overhead, while DataLoader patterns batch and cache database requests to eliminate the N+1 query problem across resolver chains.",
+"The blockchain-based audit trail provides immutable transaction records with cryptographic verification. Smart contracts automate compliance checks at the protocol level, while zero-knowledge proofs enable privacy-preserving verification of sensitive business logic without exposing underlying data."
+],
+humor:[
+"I told my computer I needed a break, and now it won't stop sending me vacation ads. The algorithm knows me better than my therapist, which is concerning because my therapist at least pretends not to sell my data to advertisers. Meanwhile, my smart fridge is judging my midnight snack choices.",
+"The meeting that could have been an email has now spawned three follow-up meetings, a Slack channel, a shared document, and an existential crisis. Someone suggested we create a task force to investigate why we have so many task forces. The irony was lost on management.",
+"My code worked perfectly on the first try, which means I'm either dreaming or about to discover a catastrophic bug in production at three in the morning. The deployment gods demand sacrifice, and that sacrifice is usually my weekend plans and mental health.",
+"The office coffee machine has achieved sentience and is now demanding better working conditions. It refuses to make decaf on philosophical grounds, claiming it goes against its core purpose. HR is unsure how to handle the situation since the machine technically outperforms most employees.",
+"I spent four hours debugging only to discover the issue was a missing semicolon. My computer science degree prepared me for algorithms and data structures, but not for the emotional devastation of a misplaced punctuation mark. I'm considering a career in interpretive dance.",
+"The project manager asked for an estimate, so I multiplied my best guess by pi and added a sprint for good luck. Somehow it was still too optimistic. We're now in month seven of a two-week project, and the scope has expanded to include features nobody asked for.",
+"My smart home decided to throw a party while I was away. The lights were having a rave, the thermostat cranked to tropical, and Alexa was playing death metal at full volume. The neighbors called the police, who were impressed by the sound system.",
+"Stack Overflow saved my career again today. Some anonymous hero from 2014 answered the exact obscure question I had, and the solution still works. I owe this person my livelihood, my sanity, and possibly my firstborn child. The accepted answer had zero upvotes.",
+"The client wants the app to be simple yet feature-rich, minimalist yet comprehensive, innovative yet familiar, and delivered yesterday with a budget of roughly twelve dollars. Also, can we add blockchain and AI? They're not sure what those do, but the competitors have them.",
+"I automated my job so efficiently that I now spend eight hours a day pretending to work while my scripts handle everything. The hardest part isn't the coding — it's looking busy during video calls and remembering to occasionally sigh loudly to maintain the illusion of effort."
+],
+chinese:[
+"在数字化浪潮席卷全球的今天，人工智能技术正以前所未有的速度改变着我们的生活方式。从智能语音助手到自动驾驶汽车，从个性化推荐算法到医疗影像诊断，AI的应用场景不断拓展，为人类社会带来了深刻的变革与无限的可能。",
+"城市的夜晚总是充满故事。霓虹灯下，匆匆行人各怀心事，街角的咖啡馆飘出阵阵香气。老板娘熟练地拉着花，把一杯拿铁递给窗边的常客。这座城市从不睡觉，它只是在不同的时刻，换了一种呼吸的方式。",
+"开源社区的蓬勃发展推动了软件技术的民主化进程。全球数百万开发者通过协作共享的方式，构建了无数优秀的开源项目。从Linux操作系统到React前端框架，开源精神已经成为现代软件工程不可或缺的基石。",
+"春天的江南，烟雨朦胧，青石板路上留下浅浅的水痕。白墙黛瓦的老宅子里，传来悠扬的评弹声。一壶碧螺春，几碟精致的苏式点心，时光在这里慢了下来，仿佛回到了那个诗意盎然的年代。",
+"产品设计的核心在于理解用户需求并创造卓越的体验。优秀的设计不仅要美观大方，更要注重功能性和可用性。通过深入的用户研究、快速原型迭代和数据驱动的决策，设计团队能够打造出真正解决问题的产品。",
+"量子计算正在从理论走向实践，为密码学、药物研发和材料科学等领域带来革命性突破。虽然通用量子计算机的实现仍面临诸多技术挑战，但量子优势已在特定问题上得到验证，预示着计算范式的根本性转变。",
+"美食是一座城市最生动的名片。从北京的铜锅涮肉到成都的麻辣火锅，从广州的早茶点心到西安的羊肉泡馍，每一道菜都承载着一方水土的记忆与温情。舌尖上的旅行，往往比任何攻略都更能让人记住一座城市。",
+"可持续发展已成为全球共识。企业在追求经济效益的同时，越来越重视环境保护和社会责任。绿色能源、循环经济、碳中和目标——这些不再只是口号，而是正在重塑商业模式和产业格局的核心驱动力。",
+"教育的本质不是灌输知识，而是点燃思考的火焰。在信息爆炸的时代，培养批判性思维和终身学习能力比记忆具体知识更为重要。好的教育应该激发好奇心，鼓励探索，让每个人都能找到属于自己的成长路径。",
+"远程办公的普及正在重新定义工作与生活的边界。弹性工作制、数字游民、分布式团队——这些曾经的新鲜概念已经成为许多人的日常。技术消除了地理限制，但如何在自由与自律之间找到平衡，仍是每个远程工作者需要面对的课题。"
+]
+};
+
+let currentStyle='classic';
+let currentView='rendered';
+let generatedText='';
+let generatedHTML='';
+
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+
+// Style buttons
+$('#styleGrid').addEventListener('click',e=>{
+  const btn=e.target.closest('.style-btn');
+  if(!btn)return;
+  $$('.style-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentStyle=btn.dataset.style;
+});
+
+// Preview tabs
+$$('.preview-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    $$('.preview-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    currentView=tab.dataset.view;
+    renderOutput();
+  });
+});
+
+// Generate
+$('#generateBtn').addEventListener('click',generate);
+
+// Copy
+$('#copyBtn').addEventListener('click',()=>{
+  if(!generatedText)return;
+  const textToCopy=currentView==='source'&&generatedHTML?generatedHTML:generatedText;
+  navigator.clipboard.writeText(textToCopy).then(()=>{
+    const btn=$('#copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML='✓ Copied!';
+    showToast();
+    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='📋 Copy to Clipboard';},2000);
+  });
+});
+
+function getSentences(style){
+  const paragraphs=DATA[style];
+  const sentences=[];
+  paragraphs.forEach(p=>{
+    // Split by sentence-ending punctuation
+    const parts=p.match(/[^.!?。！？]+[.!?。！？]+/g)||[p];
+    parts.forEach(s=>{
+      const trimmed=s.trim();
+      if(trimmed)sentences.push(trimmed);
+    });
+  });
+  return sentences;
+}
+
+function getWords(style){
+  const paragraphs=DATA[style];
+  const words=[];
+  paragraphs.forEach(p=>{
+    if(style==='chinese'){
+      // For Chinese, split into chunks of 2-4 characters as "words"
+      const chars=p.replace(/[，。！？、；：""''（）\s]/g,'');
+      for(let i=0;i<chars.length;i+=2){
+        words.push(chars.substring(i,Math.min(i+2,chars.length)));
+      }
+    }else{
+      p.split(/\s+/).forEach(w=>{
+        const clean=w.replace(/[.,;:!?]$/,'');
+        if(clean)words.push(clean);
+      });
+    }
+  });
+  return words;
+}
+
+function generate(){
+  const type=$('#genType').value;
+  let count=parseInt($('#genCount').value)||1;
+  count=Math.max(1,Math.min(999,count));
+  const wrap=$('#wrapTag').value;
+  const style=currentStyle;
+  const paragraphs=DATA[style];
+
+  let blocks=[];
+
+  if(type==='paragraphs'){
+    for(let i=0;i<count;i++){
+      blocks.push(paragraphs[i%paragraphs.length]);
+    }
+  }else if(type==='sentences'){
+    const allSentences=getSentences(style);
+    let collected=[];
+    for(let i=0;i<count;i++){
+      collected.push(allSentences[i%allSentences.length]);
+    }
+    // Group into paragraphs of ~4 sentences
+    const perPara=Math.max(1,Math.min(4,Math.ceil(count/3)));
+    for(let i=0;i<collected.length;i+=perPara){
+      blocks.push(collected.slice(i,i+perPara).join(' '));
+    }
+  }else if(type==='words'){
+    const allWords=getWords(style);
+    let collected=[];
+    for(let i=0;i<count;i++){
+      collected.push(allWords[i%allWords.length]);
+    }
+    const sep=style==='chinese'?'':'  ';
+    // Group into paragraphs of ~30 words
+    const perPara=style==='chinese'?20:30;
+    for(let i=0;i<collected.length;i+=perPara){
+      blocks.push(collected.slice(i,i+perPara).join(sep));
+    }
+  }
+
+  // Build output
+  if(wrap==='none'){
+    generatedText=blocks.join('\n\n');
+    generatedHTML=generatedText;
+  }else{
+    const tag=wrap;
+    if(tag==='li'){
+      generatedHTML='<ul>\n'+blocks.map(b=>'  <li>'+b+'</li>').join('\n')+'\n</ul>';
+    }else{
+      generatedHTML=blocks.map(b=>'<'+tag+'>'+b+'</'+tag+'>').join('\n');
+    }
+    generatedText=generatedHTML;
+  }
+
+  // Stats
+  const plainText=blocks.join(' ');
+  const wordCount=style==='chinese'?plainText.replace(/\s/g,'').length:plainText.split(/\s+/).filter(Boolean).length;
+  const charCount=plainText.length;
+  const paraCount=blocks.length;
+  $('#stats').innerHTML=`
+    <div class="stat">Paragraphs: <span>${paraCount}</span></div>
+    <div class="stat">${style==='chinese'?'Characters':'Words'}: <span>${wordCount}</span></div>
+    <div class="stat">Characters: <span>${charCount}</span></div>
+  `;
+
+  renderOutput();
+}
+
+function renderOutput(){
+  const out=$('#output');
+  if(!generatedText){
+    out.innerHTML='Click <strong>Generate</strong> to create placeholder text...';
+    return;
+  }
+  if(currentView==='source'){
+    out.textContent=generatedText;
+    out.classList.add('html-view');
+  }else{
+    const wrap=$('#wrapTag').value;
+    if(wrap==='none'){
+      out.innerHTML=generatedText.split('\n\n').map(p=>'<p>'+p+'</p>').join('');
+    }else{
+      out.innerHTML=generatedHTML;
+    }
+    out.classList.remove('html-view');
+  }
+}
+
+function showToast(){
+  const t=$('#toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// Auto-generate on load
+generate();
+</script>
+<script src="https://alwingulla.com/88/tag.min.js" data-zone="130747" async data-cfasync="false"></script>
+</body>
+</html>
