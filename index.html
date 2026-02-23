@@ -3,285 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Lorem Ipsum Generator</title>
-<meta name="description" content="Generate creative Lorem Ipsum text in multiple styles: Classic Latin, Hipster, Tech, Pirate, and Zombie.">
+<title>AI Lorem Ipsum Generator — Multi-Language Placeholder Text</title>
+<meta name="description" content="Generate placeholder text in Latin, Chinese, Japanese, and Korean. Customize paragraphs, sentences, words, HTML wrapping, and more.">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#1a1a2e;--bg2:#16213e;--bg3:#0f3460;--accent:#e94560;--accent2:#533483;--text:#eee;--text2:#aab;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.3)}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center}
-.container{max-width:860px;width:100%;padding:20px}
-header{text-align:center;padding:40px 0 30px;animation:fadeDown .6s ease}
-h1{font-size:2.4rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
-header p{color:var(--text2);font-size:1.05rem}
-.controls{background:var(--bg2);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:24px;animation:fadeUp .6s ease}
-.row{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap}
-.field{flex:1;min-width:180px}
-.field label{display:block;font-size:.85rem;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-select,input[type=number]{width:100%;padding:10px 14px;background:var(--bg);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text);font-size:.95rem;transition:border .2s}
-select:focus,input:focus{outline:none;border-color:var(--accent)}
-select option{background:var(--bg)}
-.styles-grid{display:flex;gap:8px;flex-wrap:wrap}
-.style-btn{padding:8px 16px;border-radius:20px;border:2px solid rgba(255,255,255,.1);background:transparent;color:var(--text2);cursor:pointer;font-size:.85rem;transition:all .25s}
-.style-btn:hover{border-color:var(--accent);color:var(--text)}
-.style-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.05)}
-.generate-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;color:#fff;font-size:1.1rem;font-weight:600;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:8px}
-.generate-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,69,96,.4)}
-.generate-btn:active{transform:translateY(0)}
-.output-wrap{background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp .6s ease .1s both}
-.output-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
-.output-header h3{font-size:.95rem;color:var(--text2)}
-.copy-btn{padding:8px 20px;background:var(--bg3);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text);cursor:pointer;font-size:.85rem;transition:all .25s;display:flex;align-items:center;gap:6px}
-.copy-btn:hover{background:var(--accent);border-color:var(--accent)}
-.copy-btn.copied{background:#2ecc71;border-color:#2ecc71}
-#output{padding:20px;min-height:200px;line-height:1.8;font-size:.95rem;color:var(--text2);white-space:pre-wrap;word-wrap:break-word;max-height:500px;overflow-y:auto}
-#output::-webkit-scrollbar{width:6px}
-#output::-webkit-scrollbar-track{background:transparent}
-#output::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
-.toast{position:fixed;top:20px;right:20px;padding:12px 24px;background:#2ecc71;color:#fff;border-radius:8px;font-weight:600;transform:translateX(120%);transition:transform .3s ease;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,.3)}
-.toast.show{transform:translateX(0)}
-footer{text-align:center;padding:30px 0;color:var(--text2);font-size:.8rem}
-footer a{color:var(--accent);text-decoration:none}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:600px){
-  h1{font-size:1.8rem}
-  .container{padding:12px}
-  .controls{padding:16px}
-  .row{gap:10px}
-  .field{min-width:140px}
-  #output{font-size:.88rem;max-height:350px}
-}
-.pro-section{position:relative;margin-top:24px;border-radius:var(--radius);overflow:hidden}
-.pro-blur{filter:blur(4px);pointer-events:none;user-select:none;opacity:.6;padding:24px;background:var(--bg2);border-radius:var(--radius)}
-.pro-blur h3{font-size:1rem;margin-bottom:12px;color:var(--text)}
-.pro-blur .pro-mock-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-.pro-blur .pro-mock-input{flex:1;min-width:150px;padding:10px 14px;background:var(--bg);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text2);font-size:.9rem}
-.pro-blur .pro-mock-btn{padding:10px 20px;background:var(--accent);border-radius:8px;color:#fff;font-size:.9rem;font-weight:600}
-.pro-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,.3);border-radius:var(--radius);z-index:10;transition:background .2s}
-.pro-overlay:hover{background:rgba(0,0,0,.45)}
-.pro-lock{font-size:2.5rem;margin-bottom:8px}
-.pro-label{font-size:1.1rem;font-weight:600;color:#fff}
-.pro-sublabel{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:4px}
-.pro-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.pro-modal-bg.show{display:flex}
-.pro-modal{background:var(--bg2);border-radius:16px;padding:32px;max-width:420px;width:90%;text-align:center;animation:proIn .3s ease}
-@keyframes proIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-.pro-modal h2{font-size:1.4rem;margin-bottom:4px}
-.pro-modal .pro-price{font-size:2rem;font-weight:700;color:var(--accent);margin:12px 0}
-.pro-modal ul{text-align:left;list-style:none;margin:16px 0;padding:0}
-.pro-modal li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.95rem}
-.pro-modal li::before{content:'✓ ';color:#2ecc71;font-weight:700}
-.pro-modal .pro-cta{display:block;width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;color:#fff;font-size:1.1rem;font-weight:600;cursor:pointer;margin-top:16px;text-decoration:none;text-align:center;transition:transform .2s,box-shadow .2s}
-.pro-modal .pro-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,69,96,.4)}
-.pro-modal .pro-later{background:none;border:none;color:var(--text2);cursor:pointer;margin-top:12px;font-size:.9rem;padding:8px}
-.pro-modal .pro-later:hover{color:var(--text)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#1a1a2e;--surface:#16213e;--surface2:#0f3460;--accent:#e94560;--accent2:#533483;--text:#eee;--text2:#aab;--radius:10px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:20px 16px 60px}
+h1{text-align:center;font-size:clamp(1.6rem,4vw,2.4rem);margin:24px 0 8px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{text-align:center;color:var(--text2);margin-bottom:28px;font-size:.95rem}
+.card{background:var(--surface);border-radius:var(--radius);padding:20px 24px;margin-bottom:18px}
+.card h2{font-size:1.05rem;margin-bottom:14px;color:var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+.field{flex:1;min-width:140px}
+.field label{display:block;font-size:.82rem;color:var(--text2);margin-bottom:5px}
+.field select,.field input[type=text],.field input[type=number]{width:100%;padding:9px 12px;border:1px solid #333;border-radius:6px;background:#111;color:var(--text);font-size:.92rem;outline:none;transition:border .2s}
+.field select:focus,.field input:focus{border-color:var(--accent)}
+.field input[type=range]{width:100%;accent-color:var(--accent);margin-top:4px}
+.range-val{font-size:.8rem;color:var(--accent);float:right}
+.chip-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;background:#111;border:1px solid #333;cursor:pointer;font-size:.85rem;transition:all .2s;user-select:none}
+.chip:hover{border-color:var(--accent)}
+.chip input{display:none}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn{padding:11px 28px;border:none;border-radius:6px;font-size:.95rem;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-secondary{background:#222;color:var(--text);border:1px solid #444}
+.btn-secondary:hover{border-color:var(--accent)}
+.btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.output-area{min-height:120px;background:#111;border:1px solid #333;border-radius:8px;padding:16px;font-size:.92rem;line-height:1.7;white-space:pre-wrap;word-break:break-word;color:var(--text);max-height:500px;overflow-y:auto}
+.output-area:empty::before{content:'Generated text will appear here...';color:#555}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#fff;padding:10px 24px;border-radius:20px;font-size:.9rem;opacity:0;transition:all .35s;pointer-events:none;z-index:999}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.stats{display:flex;gap:16px;margin-top:10px;font-size:.8rem;color:var(--text2)}
+footer{text-align:center;color:#555;font-size:.78rem;margin-top:30px}
+@media(max-width:600px){.container{padding:12px 10px 50px}.card{padding:14px 16px}.field{min-width:100%}.btn-row{flex-direction:column}.btn{width:100%}}
 </style>
 </head>
 <body>
 <div class="container">
-<header>
-<h1>&#x1F4DD; AI Lorem Ipsum</h1>
-<p>Generate placeholder text in multiple creative styles</p>
-</header>
-<div class="controls">
+<h1>AI Lorem Ipsum Generator</h1>
+<p class="subtitle">Multi-language placeholder text — Latin, Chinese, Japanese, Korean</p>
+
+<div class="card">
+<h2>Settings</h2>
 <div class="row">
-<div class="field">
-<label>Style</label>
-<div class="styles-grid" id="styleGrid"></div>
+<div class="field"><label>Language</label>
+<select id="lang"><option value="latin">Latin (Classic)</option><option value="chinese">中文 Chinese</option><option value="japanese">日本語 Japanese</option><option value="korean">한국어 Korean</option></select></div>
+<div class="field"><label>Type</label>
+<select id="genType"><option value="paragraphs">Paragraphs</option><option value="sentences">Sentences</option><option value="words">Words</option></select></div>
+</div>
+<div class="row" style="margin-top:14px">
+<div class="field"><label>Count <span class="range-val" id="countVal">3</span></label>
+<input type="range" id="count" min="1" max="50" value="3"></div>
+</div>
+<div class="row" style="margin-top:14px">
+<div class="field"><label>Custom Starting Text (optional)</label>
+<input type="text" id="startText" placeholder="Your text will appear at the beginning..."></div>
 </div>
 </div>
-<div class="row">
-<div class="field">
-<label>Type</label>
-<select id="typeSelect">
-<option value="paragraphs">Paragraphs</option>
-<option value="sentences">Sentences</option>
-<option value="words">Words</option>
-<option value="list">List Items</option>
-</select>
-</div>
-<div class="field">
-<label>Count (1-50)</label>
-<input type="number" id="countInput" value="3" min="1" max="50">
+
+<div class="card">
+<h2>HTML Wrapping</h2>
+<div class="chip-row" id="tagOptions">
+<label class="chip active"><input type="radio" name="htag" value="" checked><span>None</span></label>
+<label class="chip"><input type="radio" name="htag" value="p"><span>&lt;p&gt;</span></label>
+<label class="chip"><input type="radio" name="htag" value="div"><span>&lt;div&gt;</span></label>
+<label class="chip"><input type="radio" name="htag" value="span"><span>&lt;span&gt;</span></label>
+<label class="chip"><input type="radio" name="htag" value="li"><span>&lt;li&gt;</span></label>
+<label class="chip"><input type="radio" name="htag" value="blockquote"><span>&lt;blockquote&gt;</span></label>
 </div>
 </div>
-<button class="generate-btn" onclick="generate()">Generate Text</button>
+
+<div class="card">
+<h2>Output</h2>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="generate()">Generate</button>
+<button class="btn btn-secondary" onclick="copyText()">Copy</button>
+<button class="btn btn-secondary" onclick="clearOutput()">Clear</button>
 </div>
-<div class="output-wrap">
-<div class="output-header">
-<h3>Generated Text</h3>
-<button class="copy-btn" onclick="copyText()"><span>&#x1F4CB;</span> Copy</button>
+<div class="output-area" id="output" style="margin-top:14px"></div>
+<div class="stats" id="stats"></div>
 </div>
-<div id="output">Click "Generate Text" to create your lorem ipsum...</div>
+<footer>AI Lorem Ipsum Generator</footer>
 </div>
-<footer>
-<p>AI Lorem Ipsum Generator &mdash; Built with &#x2764;&#xFE0F; | <a href="https://github.com/Lifa-su/ai-lorem-ipsum" target="_blank">GitHub</a></p>
-</footer>
-</div>
-<div class="toast" id="toast">Copied to clipboard!</div>
+<div class="toast" id="toast"></div>
 
 <script>
-const DATA={
-classic:{
-name:"Classic Latin",
-words:["lorem","ipsum","dolor","sit","amet","consectetur","adipiscing","elit","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua","enim","ad","minim","veniam","quis","nostrud","exercitation","ullamco","laboris","nisi","aliquip","ex","ea","commodo","consequat","duis","aute","irure","in","reprehenderit","voluptate","velit","esse","cillum","fugiat","nulla","pariatur","excepteur","sint","occaecat","cupidatat","non","proident","sunt","culpa","qui","officia","deserunt","mollit","anim","id","est","laborum","semper","augue","interdum","venenatis","cras","pulvinar","mattis","nunc","pellentesque","habitant","morbi","tristique","senectus","netus","malesuada","fames","turpis","egestas","maecenas","pharetra","convallis","posuere","urna","condimentum","lacinia","quas","nostrum","exercitationem","ullam","corporis","suscipit","laboriosam","totam","rem","aperiam","eaque","ipsa","quae","inventore","veritatis","quasi","architecto","beatae","vitae","dicta","explicabo","nemo","ipsam","voluptatem","quia","voluptas","aspernatur","aut","odit","fugit","consequuntur","magni","dolores","ratione","sequi","nesciunt","neque","porro","quisquam"],
-sentences:["Lorem ipsum dolor sit amet, consectetur adipiscing elit.","Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.","Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.","Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.","Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.","Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.","Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.","Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit.","Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse.","At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.","Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.","Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.","Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus.","Nulla facilisi morbi tempus iaculis urna id volutpat lacus laoreet.","Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis.","Viverra accumsan in nisl nisi scelerisque eu ultrices vitae auctor.","Amet consectetur adipiscing elit pellentesque habitant morbi tristique senectus.","Eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque.","Massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin.","Cras pulvinar mattis nunc sed blandit libero volutpat sed cras ornare.","Feugiat in ante metus dictum at tempor commodo ullamcorper.","Turpis egestas maecenas pharetra convallis posuere morbi leo urna.","Amet venenatis urna cursus eget nunc scelerisque viverra mauris in.","Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque.","Vitae suscipit tellus mauris a diam maecenas sed enim ut.","Adipiscing commodo elit at imperdiet dui accumsan sit amet nulla.","Ultrices sagittis orci a scelerisque purus semper eget duis at.","Pharetra magna ac placerat vestibulum lectus mauris ultrices eros in.","Consequat nisl vel pretium lectus quam id leo in vitae.","Amet risus nullam eget felis eget nunc lobortis mattis aliquam."]
-},
-hipster:{
-name:"Hipster",
-words:["artisan","kombucha","aesthetic","vinyl","craft","organic","sustainable","avocado","toast","brunch","latte","fixie","beard","flannel","typewriter","polaroid","vegan","gluten-free","kale","quinoa","sriracha","microbrew","cold-brew","sourdough","matcha","oat-milk","thrift","vintage","retro","upcycled","minimalist","curated","handcrafted","bespoke","small-batch","farm-to-table","locally-sourced","free-range","ethically-made","slow-fashion","zero-waste","plant-based","mindful","intentional","hygge","wabi-sabi","kinfolk","wanderlust","bohemian","eclectic","reclaimed","raw","unfiltered","single-origin","pour-over","nitro","fermented","probiotic","adaptogen","turmeric","activated","charcoal","ceremonial","cacao","breathwork","journaling","gratitude","crystals","sage","palo-santo","macrame","terrarium","succulent","monstera","rattan","linen","ceramic","stoneware","enamel","copper","brass","patina","distressed","weathered","sun-bleached","hand-dyed","indigo","shibori","block-print","letterpress","risograph","zine","podcast","playlist","ambient","lo-fi","chillwave","synthwave","dreampop","shoegaze","folktronica","neo-soul"],
-sentences:["You probably haven't heard of them, but this artisan kombucha is literally changing the game.","I found this vintage typewriter at a thrift store and now I write all my poetry on it.","The cold-brew at this place is single-origin, ethically sourced, and absolutely transcendent.","My sourdough starter is three years old and has more personality than most people I know.","We curated a small-batch collection of handcrafted ceramics from local artisans.","This plant-based brunch spot uses only locally-sourced, farm-to-table ingredients.","I switched to oat milk and honestly my pour-over has never tasted better.","The aesthetic of this minimalist linen collection speaks to my wabi-sabi sensibilities.","We hosted a breathwork session followed by ceremonial cacao and vinyl listening.","My gratitude journal is letterpress printed on recycled paper with soy-based ink.","The zero-waste lifestyle isn't just a trend, it's an intentional way of being.","I discovered this lo-fi playlist while repotting my monstera and it was pure hygge.","This bespoke macrame wall hanging was hand-dyed with natural indigo pigments.","The fermented hot sauce has adaptogenic mushrooms and turmeric for gut health.","We converted a reclaimed barn into a slow-fashion popup with ethically-made pieces.","My fixie has a copper bell and distressed leather grips from a local craftsman.","The risograph zine collective meets every full moon for collaborative art making.","I only drink matcha that's ceremonial grade and whisked with a bamboo chasen.","This eclectic bohemian space features rattan furniture and hand-block-printed textiles.","The neo-soul folktronica act played a secret show at the rooftop succulent garden.","Activated charcoal everything was so last year but fermented foods are forever.","The podcast about sustainable living features interviews with small-batch makers.","We did a sage and palo santo cleansing before the ambient music meditation.","This upcycled denim collection transforms vintage finds into wearable art pieces.","The probiotic smoothie bowl is topped with organic granola and edible flowers.","I spent the weekend at a kinfolk-inspired gathering in a sun-bleached farmhouse.","The synthwave playlist pairs perfectly with this nitro cold brew on tap.","My terrarium workshop teaches mindful crafting with reclaimed glass containers.","The stoneware mugs are wood-fired and each one has a unique patina.","This shoegaze dreampop band records everything on analog tape for authentic warmth."]
-},
-tech:{
-name:"Tech",
-words:["algorithm","blockchain","kubernetes","microservice","serverless","API","endpoint","deployment","container","docker","pipeline","agile","sprint","standup","refactor","scalable","cloud-native","DevOps","CI/CD","repository","commit","merge","branch","pull-request","code-review","debug","compile","runtime","framework","library","dependency","npm","webpack","typescript","react","component","state","props","hooks","middleware","authentication","OAuth","JWT","encryption","hash","cache","latency","throughput","bandwidth","uptime","SLA","monitoring","logging","metrics","dashboard","alert","incident","rollback","canary","blue-green","feature-flag","A/B-test","machine-learning","neural-network","tensor","GPU","inference","training","dataset","model","epoch","gradient","backpropagation","transformer","attention","embedding","tokenizer","prompt","fine-tune","RAG","vector-database","LLM","hallucination","alignment","benchmark","evaluation","quantization","distillation","federated","edge-computing","IoT","WebSocket","GraphQL","REST","gRPC","protobuf","schema","migration","ORM","index","query","shard","replica","consensus","raft"],
-sentences:["The microservice architecture leverages Kubernetes for container orchestration at scale.","We refactored the authentication pipeline to use JWT tokens with OAuth 2.0 flow.","The CI/CD pipeline automatically runs code review checks before merging pull requests.","Our serverless functions reduced latency by 40% compared to the monolithic deployment.","The machine learning model achieved 97% accuracy after fine-tuning on the custom dataset.","We implemented a blue-green deployment strategy with automated canary releases.","The GraphQL API endpoint handles real-time subscriptions via WebSocket connections.","Our DevOps team monitors uptime SLAs through a comprehensive metrics dashboard.","The transformer architecture uses multi-head attention mechanisms for sequence processing.","We migrated the database schema and added sharding for horizontal scalability.","The feature flag system enables A/B testing without requiring new deployments.","Our vector database powers RAG-based retrieval for the LLM inference pipeline.","The edge computing nodes process IoT sensor data with sub-millisecond latency.","We optimized the neural network through quantization and knowledge distillation techniques.","The React component tree manages state through custom hooks and context providers.","Our blockchain consensus mechanism uses a modified Raft protocol for finality.","The webpack build pipeline tree-shakes unused dependencies to minimize bundle size.","We implemented end-to-end encryption with AES-256 and RSA key exchange.","The monitoring system triggers automated rollback when error rates exceed thresholds.","Our agile sprint retrospectives identified bottlenecks in the code review process.","The GPU cluster handles distributed training across multiple nodes with gradient synchronization.","We built a custom tokenizer for the domain-specific language model fine-tuning.","The cache invalidation strategy uses event-driven architecture with message queues.","Our TypeScript migration improved developer experience with strict type checking.","The gRPC service uses protobuf schemas for efficient binary serialization.","We reduced hallucination rates by implementing retrieval-augmented generation patterns.","The federated learning approach trains models across distributed datasets without data sharing.","Our incident response playbook automates alert triage and escalation procedures.","The ORM layer abstracts database queries while maintaining index optimization.","We benchmark model performance using standardized evaluation metrics across epochs."]
-},
-pirate:{
-name:"Pirate",
-words:["ahoy","matey","plunder","treasure","doubloon","galleon","scallywag","buccaneer","corsair","privateer","cutlass","cannon","anchor","helm","starboard","port","bow","stern","mast","rigging","crow's-nest","plank","gangway","broadside","mutiny","marooned","landlubber","sea-dog","barnacle","kraken","siren","mermaid","compass","sextant","spyglass","jolly-roger","skull","crossbones","booty","loot","pillage","raid","voyage","horizon","typhoon","squall","gale","whirlpool","reef","lagoon","cove","harbor","isle","archipelago","rum","grog","tankard","galley","brig","hold","cargo","contraband","bounty","ransom","parley","quarter","swashbuckle","dagger","flintlock","powder","cannonball","figurehead","bowsprit","rudder","keel","hull","porthole","capstan","windlass","fo'c'sle","quarterdeck","poop-deck","mizzen","jib","topsail","mainsail","halyard","shroud","ratline","bilge","scurvy","hardtack","weevil","shanty","hornpipe","pegleg","eyepatch","hook","tricorn","bandana","sash"],
-sentences:["Ahoy matey, set sail for the horizon where treasure and glory await us!","The scallywag captain ordered the crew to plunder every galleon in sight.","Shiver me timbers, the kraken rises from the deep to devour our ship!","We buried the treasure chest on a remote isle marked with skull and crossbones.","The buccaneer raised the jolly roger and fired a broadside of cannonballs.","Avast ye landlubbers, there be rum in the galley and gold in the hold!","The corsair navigated through the treacherous reef using only a compass and spyglass.","Blimey, the mutinous crew marooned the captain on a deserted archipelago.","The privateer's cutlass gleamed in the moonlight as she boarded the merchant vessel.","Yo ho ho, the sea dogs sang shanties while swabbing the poop deck.","The first mate spotted enemy sails from the crow's nest at dawn.","Batten down the hatches, a typhoon approaches from the starboard side!","The pirate queen demanded parley before unleashing her fleet upon the harbor.","Dead men tell no tales, but this treasure map speaks volumes of doubloons.","The old sea dog lost his leg to a cannonball but gained a pegleg of legend.","We sailed through the whirlpool and emerged in a hidden lagoon of wonders.","The brig was full of prisoners awaiting ransom from their wealthy families.","Arrr, the grog flowed freely as we celebrated our most daring raid yet.","The figurehead of our galleon struck fear into every merchant on the seven seas.","Walk the plank ye scurvy bilge rat, or face the captain's flintlock!","The siren's song lured many a sailor to the jagged rocks below.","Our contraband cargo of spices was worth more than a king's ransom.","The quartermaster rationed the hardtack despite the weevils crawling through it.","By Davy Jones' locker, that squall nearly sent us all to a watery grave!","The swashbuckling corsair swung from the rigging with a dagger between her teeth.","The anchor dropped in the sheltered cove as we prepared for the midnight raid.","Every buccaneer knows that a good compass is worth more than a chest of gold.","The powder magazine exploded sending the enemy galleon to the bottom of the sea.","The hornpipe dance on the quarterdeck lifted the spirits of the weary crew.","Hoist the mainsail and trim the jib, we chase the merchant fleet at dawn!"]
-},
-zombie:{
-name:"Zombie",
-words:["brains","undead","shamble","horde","apocalypse","survivor","barricade","outbreak","infection","virus","mutation","decay","rotting","flesh","corpse","graveyard","crypt","tombstone","morgue","quarantine","contamination","epidemic","pandemic","wasteland","desolate","abandoned","ruins","bunker","shelter","fortify","scavenge","supplies","ammunition","shotgun","machete","crossbow","headshot","bite","scratch","fever","turning","reanimated","walker","crawler","lurker","screamer","bloater","spitter","husk","revenant","ghoul","wraith","necrotic","putrid","festering","gangrenous","decompose","marrow","sinew","viscera","entrails","cranium","cerebral","cortex","synapse","parasite","fungal","spore","cordyceps","hivemind","swarm","frenzy","rampage","siege","overrun","evacuate","broadcast","static","generator","rations","canned","purify","boil","filter","perimeter","watchtower","patrol","convoy","caravan","refugee","sanctuary","haven","compound","stockpile","triage","tourniquet","antiseptic","suture","immune","antibody","antidote","vaccine","serum","specimen","laboratory"],
-sentences:["The undead horde shambled through the abandoned streets searching for fresh brains.","We barricaded the doors and windows as the zombie apocalypse reached our neighborhood.","The infection spread rapidly, turning survivors into reanimated corpses within hours.","Scavenge for supplies and ammunition before the next wave of walkers arrives.","The graveyard erupted as hundreds of rotting corpses clawed their way to the surface.","Our bunker has enough rations to survive the outbreak for approximately three months.","The screamer's howl attracted every lurker within a five-mile radius to our position.","Scientists in the underground laboratory worked desperately on a vaccine for the virus.","The convoy of survivors made their way through the desolate wasteland toward sanctuary.","A single bite or scratch is enough to begin the irreversible turning process.","The bloater exploded in a shower of putrid flesh and necrotic tissue.","We fortified the compound perimeter with razor wire and watchtower positions.","The fungal spores from the cordyceps mutation created a terrifying hivemind swarm.","Every headshot counts when your ammunition supply is running dangerously low.","The quarantine zone was overrun within days of the initial contamination event.","Survivors broadcast on emergency frequencies hoping someone would hear their desperate plea.","The crawler dragged itself across the morgue floor leaving a trail of decay.","Our triage station ran out of antiseptic and tourniquets by the second day.","The immune survivor's antibodies held the key to developing a working antidote.","Festering ghouls lurked in every shadow of the abandoned hospital ruins.","The generator powered our shelter but its noise attracted the undead frenzy.","We purified water by boiling and filtering through makeshift charcoal systems.","The revenant was unlike any zombie we had encountered, fast and terrifyingly intelligent.","Patrol teams swept the perimeter at dawn checking for breaches in our defenses.","The refugee caravan stretched for miles along the crumbling highway toward haven.","Necrotic tissue samples revealed the virus had undergone a frightening new mutation.","The siege lasted forty days before the horde finally lost interest and shambled away.","Every survivor carried a machete because eventually the ammunition always runs out.","The laboratory specimen broke containment and patient zero walked the earth once more.","In the end it wasn't the zombies that were most dangerous, but other desperate survivors."]
+const W={
+latin:["lorem","ipsum","dolor","sit","amet","consectetur","adipiscing","elit","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua","enim","ad","minim","veniam","quis","nostrud","exercitation","ullamco","laboris","nisi","aliquip","ex","ea","commodo","consequat","duis","aute","irure","in","reprehenderit","voluptate","velit","esse","cillum","fugiat","nulla","pariatur","excepteur","sint","occaecat","cupidatat","non","proident","sunt","culpa","qui","officia","deserunt","mollit","anim","id","est","laborum","porta","nibh","venenatis","cras","ornare","arcu","dui","vivamus","at","augue","eget","pellentesque","morbi","tristique","senectus","netus","malesuada","fames","turpis","egestas","praesent","elementum","facilisis","leo","vel","fringilla","lectus","mauris","ultrices","eros","iaculis","nunc","congue","nisi","vitae","suscipit","tellus","sagittis","eu","volutpat","odio","facilisi","etiam","dignissim","diam","maecenas","pharetra","convallis","posuere","accumsan","lacus","imperdiet","proin","fermentum","semper","quis","hendrerit","gravida","rutrum","quisque","blandit","libero","volutpat","sodales","neque","laoreet","suspendisse","interdum","metus","vulputate","placerat","vestibulum","rhoncus","pellentesque","habitant","massa","sapien","faucibus","scelerisque","feugiat","pretium","fusce","integer","tincidunt","curabitur","tortor","condimentum","lacinia","viverra","justo","nec","ultrices","mattis","pulvinar","urna","felis","bibendum","ligula","risus","nullam","vehicula","ipsum","primis","orci","luctus","curae","donec","velit","molestie","consequat","nisl","purus","lobortis","dictum","potenti","hac","habitasse","platea","dictumst","erat","nam","ante","maximus","finibus","efficitur"],
+chinese:["的","一","是","在","不","了","有","和","人","这","中","大","为","上","个","国","我","以","要","他","时","来","用","们","生","到","作","地","于","出","会","从","可","她","那","得","也","你","年","对","就","能","下","过","子","说","产","种","面","而","方","后","多","定","行","学","法","所","民","得","经","十","三","之","进","着","等","部","度","家","电","力","里","如","水","化","高","自","二","理","起","小","物","现","实","加","量","都","两","体","制","机","当","使","点","从","业","本","去","把","性","好","应","开","它","合","还","因","由","其","些","然","前","外","天","政","四","日","那","社","义","事","平","形","相","全","表","间","样","与","关","各","重","新","线","内","数","正","心","反","你","明","看","原","又","么","利","比","或","但","质","气","第","向","道","命","此","变","条","只","没","结","解","问","意","建","月","公","无","系","军","很","情","最","手","标","志","期","已","根","共","直","团","统","式","转","别","造","运","物","受","支","持","将","特","区","世","界","海","光","主","难","完","设","及","城","步","更","话","少","找","回","归","思","感","每","风","告","需","望","觉","安","门","场","报","例","真","手","际","通","万","信","干","精","确","什","知","花","带","雨","听","哪","位","达","走","清","百","接","让","提","整","认","响","雪","流","未","场","五","章","鱼","住","树","包","充","半","路","级","像","既","院","热","便","九","紧","差","随","送","切","星","导","晚","表","够","整","认","响","传","值","市","直","消","保","治","北","造","百","规","热","领","七","海","口","东","导","器","压","志","世","金","增","争","济","阶","油","思","术","极","交","受","联","什","认","六","共","权","收","证","改","清","己","美","再","采","转","更","单","风","切","打","白","教","速","花","带","安","某","集","落","考","久","努","准","织","病","息","达","取","供","影","离","常","空","觉","河","青","税","续","哈","紧","损","忽","质","剑","醒","梦","忆","幻","境","苍","穹","浩","瀚","星","辰","银","河","流","转","岁","月","悠","长"],
+japanese:["私","は","です","ます","の","に","を","が","と","も","で","から","まで","より","へ","か","ね","よ","な","こと","もの","ところ","とき","ため","ほう","わけ","はず","つもり","そう","よう","みたい","らしい","する","なる","ある","いる","できる","思う","言う","行く","来る","見る","知る","考える","使う","作る","持つ","出す","入る","始める","終わる","続ける","変わる","決める","選ぶ","探す","見つける","感じる","信じる","願う","夢見る","生きる","死ぬ","笑う","泣く","怒る","喜ぶ","悲しむ","愛する","憎む","恐れる","望む","祈る","歌う","踊る","走る","歩く","飛ぶ","泳ぐ","登る","降りる","開ける","閉める","書く","読む","聞く","話す","食べる","飲む","寝る","起きる","遊ぶ","働く","学ぶ","教える","助ける","守る","戦う","勝つ","負ける","世界","人間","社会","文化","歴史","自然","科学","技術","芸術","音楽","時間","空間","未来","過去","現在","希望","絶望","勇気","知恵","力","心","魂","精神","身体","命","運命","奇跡","冒険","旅","道","光","闇","風","火","水","土","空","海","山","川","森","花","木","星","月","太陽","雲","雨","雪","春","夏","秋","冬","朝","昼","夜","東","西","南","北","大きい","小さい","新しい","古い","良い","悪い","美しい","醜い","強い","弱い","長い","短い","高い","低い","深い","浅い","広い","狭い","明るい","暗い","温かい","冷たい","速い","遅い","近い","遠い","多い","少ない","若い","静か","賑やか","簡単","複雑","重要","必要","可能","不思議","素晴らしい","楽しい","嬉しい","悲しい","寂しい","恥ずかしい","懐かしい","珍しい","優しい","厳しい","激しい","穏やか","鮮やか","爽やか","華やか","密か","確か","豊か","僅か","幽か"],
+korean:["나는","우리","그는","그녀는","이것","저것","하다","되다","있다","없다","가다","오다","보다","알다","생각하다","말하다","듣다","쓰다","읽다","먹다","마시다","자다","일어나다","걷다","달리다","날다","웃다","울다","사랑하다","미워하다","원하다","바라다","꿈꾸다","살다","죽다","만들다","찾다","느끼다","믿다","기다리다","시작하다","끝나다","변하다","세계","사람","사회","문화","역사","자연","과학","기술","예술","음악","시간","공간","미래","과거","현재","희망","절망","용기","지혜","힘","마음","영혼","정신","몸","생명","운명","기적","모험","여행","길","빛","어둠","바람","불","물","땅","하늘","바다","산","강","숲","꽃","나무","별","달","태양","구름","비","눈","봄","여름","가을","겨울","아침","낮","밤","동쪽","서쪽","남쪽","북쪽","크다","작다","새롭다","오래되다","좋다","나쁘다","아름답다","강하다","약하다","길다","짧다","높다","낮다","깊다","넓다","밝다","어둡다","따뜻하다","차갑다","빠르다","느리다","가깝다","멀다","많다","적다","젊다","조용하다","중요하다","필요하다","가능하다","불가능하다","신비롭다","놀랍다","즐겁다","행복하다","슬프다","외롭다","그리워하다","부끄럽다","소중하다","특별하다","평화롭다","자유롭다","영원하다","순수하다","진실하다","정의롭다","지금","여기","오늘","내일","어제","항상","가끔","절대","아마","정말","매우","조금","함께","혼자","다시","아직","벌써","드디어","갑자기","천천히","그래서","하지만","그러나","그리고","또는","만약","왜냐하면","그런데","그러므로","비록","때문에","덕분에","대신","처럼","같이","위해","통해","대해","관해","따라","의해"]
+};
+const FIRST_LATIN="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function genWords(lang,n){let w=W[lang],r=[];for(let i=0;i<n;i++)r.push(pick(w));return r}
+function genSentence(lang){
+let len=lang==='latin'?Math.floor(Math.random()*10)+5:lang==='chinese'?Math.floor(Math.random()*15)+8:Math.floor(Math.random()*8)+4;
+let words=genWords(lang,len);
+if(lang==='latin')return cap(words.join(' '))+'.';
+if(lang==='chinese')return words.join('')+'。';
+if(lang==='japanese')return words.join('')+'。';
+if(lang==='korean')return words.join(' ')+'.';
+return words.join(' ')+'.';
 }
-};
-
-const STYLES=Object.keys(DATA);
-let currentStyle='classic';
-
-function init(){
-const grid=document.getElementById('styleGrid');
-STYLES.forEach(s=>{
-const btn=document.createElement('button');
-btn.className='style-btn'+(s===currentStyle?' active':'');
-btn.textContent=DATA[s].name;
-btn.onclick=()=>{
-document.querySelectorAll('.style-btn').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-currentStyle=s;
-};
-grid.appendChild(btn);
+function genParagraph(lang,isFirst){
+let sc=Math.floor(Math.random()*4)+3;
+let sents=[];
+if(lang==='latin'&&isFirst){sents.push(FIRST_LATIN);sc--;}
+for(let i=0;i<sc;i++)sents.push(genSentence(lang));
+return sents.join(lang==='chinese'||lang==='japanese'?'':' ');
+}
+function getTag(){
+let c=document.querySelector('input[name="htag"]:checked');
+return c?c.value:'';
+}
+function wrapTag(text,tag){
+if(!tag)return text;
+return '<'+tag+'>'+text+'</'+tag+'>';
+}
+function generate(){
+let lang=document.getElementById('lang').value;
+let type=document.getElementById('genType').value;
+let count=parseInt(document.getElementById('count').value);
+let startText=document.getElementById('startText').value.trim();
+let tag=getTag();
+let parts=[];
+if(type==='paragraphs'){for(let i=0;i<count;i++)parts.push(genParagraph(lang,i===0));}
+else if(type==='sentences'){for(let i=0;i<count;i++)parts.push(genSentence(lang));}
+else{let w=genWords(lang,count);if(lang==='chinese'||lang==='japanese')parts=[w.join('')];else parts=[w.join(' ')];}
+if(startText&&parts.length>0){parts[0]=startText+' '+parts[0];}
+let result;
+if(tag){result=parts.map(p=>wrapTag(p,tag)).join('\n');}
+else{result=parts.join('\n\n');}
+document.getElementById('output').textContent=result;
+let wc=result.replace(/[<>\/\w+="-]/g,' ').split(/\s+/).filter(Boolean).length;
+let cc=result.length;
+document.getElementById('stats').textContent='Characters: '+cc+' | Words: ~'+wc;
+}
+function copyText(){
+let t=document.getElementById('output').textContent;
+if(!t){showToast('Nothing to copy');return;}
+navigator.clipboard.writeText(t).then(()=>showToast('Copied!')).catch(()=>{
+let ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Copied!');
+});
+}
+function clearOutput(){document.getElementById('output').textContent='';document.getElementById('stats').textContent='';}
+function showToast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+document.getElementById('count').addEventListener('input',function(){document.getElementById('countVal').textContent=this.value;});
+document.querySelectorAll('.chip').forEach(chip=>{
+chip.addEventListener('click',function(){
+document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+this.classList.add('active');
+});
 });
 generate();
-}
-
-function shuffle(arr){
-const a=[...arr];
-for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-return a;
-}
-
-function pick(arr,n){
-let result=[];
-while(result.length<n){result.push(...shuffle(arr));}
-return result.slice(0,n);
-}
-
-function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1);}
-
-function genSentence(style){
-const d=DATA[style];
-if(Math.random()<0.5&&d.sentences.length>0){
-return d.sentences[Math.floor(Math.random()*d.sentences.length)];
-}
-const len=8+Math.floor(Math.random()*12);
-const words=pick(d.words,len);
-return capitalize(words.join(' '))+'.';
-}
-
-function genParagraph(style){
-const count=4+Math.floor(Math.random()*4);
-return Array.from({length:count},()=>genSentence(style)).join(' ');
-}
-
-function generate(){
-const type=document.getElementById('typeSelect').value;
-let count=parseInt(document.getElementById('countInput').value)||3;
-count=Math.max(1,Math.min(50,count));
-document.getElementById('countInput').value=count;
-const style=currentStyle;
-let result='';
-switch(type){
-case'paragraphs':
-result=Array.from({length:count},()=>genParagraph(style)).join('\n\n');
-break;
-case'sentences':
-result=Array.from({length:count},()=>genSentence(style)).join(' ');
-break;
-case'words':
-result=pick(DATA[style].words,count).join(' ');
-break;
-case'list':
-result=Array.from({length:count},(_,i)=>(i+1)+'. '+genSentence(style)).join('\n');
-break;
-}
-const el=document.getElementById('output');
-el.style.opacity='0';
-setTimeout(()=>{el.textContent=result;el.style.opacity='1';el.style.transition='opacity .3s';},150);
-}
-
-function copyText(){
-const text=document.getElementById('output').textContent;
-navigator.clipboard.writeText(text).then(()=>{
-const btn=document.querySelector('.copy-btn');
-btn.classList.add('copied');
-btn.innerHTML='<span>&#x2705;</span> Copied!';
-const toast=document.getElementById('toast');
-toast.classList.add('show');
-setTimeout(()=>{
-toast.classList.remove('show');
-btn.classList.remove('copied');
-btn.innerHTML='<span>&#x1F4CB;</span> Copy';
-},2000);
-});
-}
-
-init();
 </script>
-<!-- Pro Section -->
-<div class="pro-section" style="max-width:860px;width:100%;padding:0 20px;margin:24px auto 0">
-<div class="pro-blur">
-<h3>🎨 Custom Vocabulary</h3>
-<div class="pro-mock-row">
-<div class="pro-mock-input">Add your own words and phrases...</div>
-<div class="pro-mock-btn">+ Add Words</div>
-</div>
-<h3>🌍 Multi-Language Output</h3>
-<div class="pro-mock-row">
-<div class="pro-mock-input">Language: Japanese (日本語)</div>
-<div class="pro-mock-input">Language: Spanish (Español)</div>
-<div class="pro-mock-input">Language: French (Français)</div>
-</div>
-<h3>🔗 API Access</h3>
-<div class="pro-mock-row">
-<div class="pro-mock-input" style="flex:2">GET /api/v1/generate?style=tech&lang=ja&count=3</div>
-<div class="pro-mock-btn">Copy Endpoint</div>
-</div>
-</div>
-<div class="pro-overlay" onclick="document.getElementById('proModal').classList.add('show')">
-<div class="pro-lock">🔒</div>
-<div class="pro-label">Pro Features</div>
-<div class="pro-sublabel">Click to unlock</div>
-</div>
-</div>
-<div class="pro-modal-bg" id="proModal" onclick="if(event.target===this)this.classList.remove('show')">
-<div class="pro-modal">
-<h2>⚡ Lorem Ipsum Pro</h2>
-<div class="pro-price">$9</div>
-<p style="color:var(--text2);font-size:.9rem">One-time payment · Lifetime access</p>
-<ul>
-<li>Custom vocabulary — add your own words & phrases</li>
-<li>Multi-language output — Japanese, Spanish, French & more</li>
-<li>API access — integrate into your workflow</li>
-<li>Priority support & future updates</li>
-</ul>
-<a class="pro-cta" href="https://feifeicch.gumroad.com/l/ai-lorem-ipsum-pro" target="_blank">Upgrade to Pro — $9</a>
-<button class="pro-later" onclick="document.getElementById('proModal').classList.remove('show')">Maybe later</button>
-</div>
-</div>
-<script src="https://alwingulla.com/88/tag.min.js" data-zone="130747" async data-cfasync="false"></script>
+<script src="https://alwingulla.com/88/tag.min.js" data-zone="130647" async data-cfasync="false"></script>
 </body>
 </html>
